@@ -200,3 +200,169 @@ class Query:
             
     def __str__(self):
         return "{} {} {}".format(self._field,self._operation,self._value)
+    
+    
+    
+  <---------> zoo <----------->
+
+
+
+
+class Deer:
+    def __init__(self, breed, required_food_in_kgs,age_in_months=1):
+        if age_in_months > 1:
+            raise ValueError(f"Invalid value for field age_in_months: {age_in_months}")
+        self._age_in_months = age_in_months
+        self._breed = breed
+        if required_food_in_kgs <= 0:
+            raise ValueError(f"Invalid value for field required_food_in_kgs: {required_food_in_kgs}")
+        self._required_food_in_kgs = required_food_in_kgs
+        self._sound = "Buck Buck"
+        self._breathe = "Breathe in air"
+        self._add_food = 2
+        
+    def __str__(self):
+        return 'Deer'
+        
+    def grow(self):
+        self._age_in_months += 1
+        self._required_food_in_kgs += self._add_food
+        
+    def make_sound(self):
+        print(self._sound)
+        
+    def breathe(self):
+        print(self._breathe)
+        
+    @property
+    def age_in_months(self):
+        return self._age_in_months
+    
+    @property
+    def breed(self):
+        return self._breed
+    
+    @property
+    def required_food_in_kgs(self):
+        return self._required_food_in_kgs
+    
+    @property
+    def sound(self):
+        return self._sound
+    
+    @property
+    def breath(self):
+        return self._breathe
+        
+    @property
+    def add_food(self):
+        return self._add_food
+        
+class Lion(Deer):
+    def __init__(self, breed, required_food_in_kgs,age_in_months=1):
+        super().__init__(breed, required_food_in_kgs,age_in_months)
+        self._sound = "Roar Roar"
+        self._add_food = 4
+    
+    def __str__(self):
+        return 'Lion'
+        
+    def hunt(self,zoo):
+        if zoo._animal_list['deer'] == 0:
+            print('No deers to hunt')
+        else:
+            zoo.animal_list['deer'] -= 1
+            zoo.animal_count -= 1
+        
+class Shark(Deer):
+    def __init__(self,breed, required_food_in_kgs,age_in_months=1):
+        super().__init__(breed, required_food_in_kgs,age_in_months)
+        self._breathe = "Breathe oxygen from water"
+        self._sound = "Shark Sound"
+        self._add_food = 8
+    
+    def __str__(self):
+        return 'Shark'
+    
+    def hunt(self,zoo):
+        if zoo._animal_list['deer'] == 0:
+            print('No deers to hunt')
+        else:
+            zoo.animal_list['deer'] -= 1
+            zoo.animal_count -= 1
+        
+class GoldFish(Deer):
+    def __init__(self,breed, required_food_in_kgs,age_in_months=1):
+        super().__init__(breed, required_food_in_kgs,age_in_months)
+        self._breathe = "Breathe oxygen from water"
+        self._sound = "Hum Hum"
+        self._add_food = 0.2
+    
+    def __str__(self):
+        return 'GoldFish'
+
+class Snake(Deer):
+    def __init__(self,breed, required_food_in_kgs,age_in_months=1):
+        super().__init__(breed, required_food_in_kgs,age_in_months)
+        self._sound = "Hiss Hiss"
+        self._add_food = 0.5
+    
+    def __str__(self):
+        return 'Snake'
+        
+    def hunt(self,zoo):
+        if zoo._animal_list['deer'] == 0:
+            print('No deers to hunt')
+        else:
+            zoo.animal_list['deer'] -= 1
+            zoo.animal_count -= 1
+        
+class Zoo:
+    def __init__(self):
+        self._reserved_food_in_kgs = 0
+        self.animal_count = 0
+        self._animal_list = {'deer': 0,'lion':0,'shark':0,'gold_fish':0,'snake':0}
+        
+    def add_food_to_reserve(self,weight):
+        self._reserved_food_in_kgs += weight
+        
+    def count_animals(self):
+        return self.animal_count
+        
+    def add_animal(self,animal):
+        self.animal_count += 1
+        if str(animal) == 'Lion':
+            self._animal_list['lion'] += 1
+        elif str(animal) == 'Deer':
+            self._animal_list['deer'] += 1
+        elif str(animal) == 'Shark':
+            self._animal_list['shark'] += 1
+        elif str(animal) == 'GoldFish':
+            self._animal_list['gold_fish'] += 1
+        elif str(animal) == 'Snake':
+            self._animal_list['snake'] += 1
+     
+        
+    def feed(self,animal):
+        self._reserved_food_in_kgs -= animal.required_food_in_kgs
+        animal.grow()
+        return self._reserved_food_in_kgs
+        
+    @classmethod
+    def count_animals_in_given_zoos(cls,list):
+        count = 0
+        for i in list:
+            count += i.animal_count
+        return count
+    
+    @classmethod
+    def count_animals_in_all_zoos(cls):
+        pass
+        
+    @property
+    def reserved_food_in_kgs(self):
+        return self._reserved_food_in_kgs
+    
+    @property
+    def animal_list(self):
+        return self._animal_list
